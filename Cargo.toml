@@ -3,4 +3,13 @@ name = "privdat"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "privdat"
+crate-type = ["lib", "cdylib"]
+
 [dependencies]
+uniffi = { version = "0.32", features = ["cli"] }
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/bin/uniffi-bindgen.rs"
