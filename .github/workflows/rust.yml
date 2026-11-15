@@ -48,3 +48,21 @@ jobs:
 
       - name: Run tests
         run: cargo test --workspace --all-features --locked
+
+  bindings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install toolchain
+        run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - name: Generate UniFFI bindings
+        run: ./scripts/gen-bindings.sh
+
+      - name: Test Python bindings
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install pytest
+          "$RUNNER_TEMP/venv/bin/pytest" -q clients/python
